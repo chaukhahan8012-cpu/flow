@@ -1,62 +1,31 @@
 import streamlit as st
 
-def draw_professional_workflow():
-    st.header("⚙️ Quy trình Vận hành Hệ thống AgriLoop")
+def draw_simple_workflow():
+    st.header("Quy trình hoạt động của AgriLoop ")
     
-    # Sử dụng Graphviz với ngôn ngữ DOT được tinh chỉnh màu sắc
     st.graphviz_chart('''
     digraph G {
-        # Cấu hình chung cho toàn sơ đồ
-        fontname="Arial";
-        compound=true;
-        rankdir=LR;  # Vẽ từ trái sang phải
+        rankdir=LR;
         node [fontname="Arial", shape=box, style="filled, rounded", color="#2E7D32", fontcolor=white];
-        edge [fontname="Arial", color="#546E7A", penwidth=1.5];
+        edge [fontname="Arial", color="#546E7A", penwidth=2];
 
-        # LAYER 1: NGƯỜI DÙNG ĐẦU VÀO (SUPPLY)
-        subgraph cluster_input {
-            label = "PHÂN HỆ QUẢN LÝ NGUỒN CUNG";
-            style = "filled, dashed";
-            color = "#E8F5E9";
-            fontcolor = "#2E7D32";
-            
-            F [label="👨‍🌾 Nông dân\\n(Đăng đơn hàng)", fillcolor="#43A047"];
-            GPS [label="📍 Định vị GPS\\n& Khối lượng", fillcolor="#43A047"];
-        }
+        # CÁC BÊN THAM GIA
+        A [label=" 1. Nông dân\\nBáo có hàng", fillcolor="#43A047"];
+        B [label=" 2. Hệ thống AgriLoop\\nTìm người mua & Ghép xe", fillcolor="#1E88E5"];
+        C [label=" 3. Tài xế\\nĐến lấy hàng & Giao đi", fillcolor="#FB8C00"];
+        D [label=" 4. Nhà máy\\nNhận hàng & Trả tiền", fillcolor="#E53935"];
 
-        # LAYER 2: BỘ NÃO HỆ THỐNG (CORE AI)
-        subgraph cluster_core {
-            label = "HỆ THỐNG TRUNG TÂM (AGRILOOP CORE)";
-            style = "filled";
-            color = "#E3F2FD";
-            fontcolor = "#1565C0";
-            
-            MATCH [label="🤖 Matching Engine\\n(Khớp Cung - Cầu)", fillcolor="#1E88E5"];
-            POOL [label="📦 Pooling Algorithm\\n(Ghép chuyến tối ưu)", fillcolor="#1E88E5"];
-        }
-
-        # LAYER 3: VẬN TẢI & NHÀ MÁY (OUTPUT)
-        subgraph cluster_output {
-            label = "PHÂN HỆ LOGISTICS & TIÊU THỤ";
-            style = "filled, dashed";
-            color = "#FFF3E0";
-            fontcolor = "#E65100";
-            
-            DRIVE [label="🚚 Đội xe AgriLoop\\n(Nhận lộ trình)", fillcolor="#FB8C00"];
-            FACT [label="🏭 Nhà máy\\n(Nhận hàng & Số hóa)", fillcolor="#FB8C00"];
-        }
-
-        # DÒNG CHẢY DỮ LIỆU
-        F -> GPS;
-        GPS -> MATCH [label="Data Stream"];
-        MATCH -> POOL [label="Tối ưu đơn"];
-        POOL -> DRIVE [label="Lệnh điều phối"];
-        DRIVE -> FACT [label="Giao hàng"];
-        
-        # PHẢN HỒI (FEEDBACK LOOP)
-        FACT -> F [label="Thanh toán & Truy xuất", style=dotted, constraint=false, color="#00897B"];
+        # DÒNG CHẠY THỰC TẾ
+        A -> B [label="Đăng tin"];
+        B -> C [label="Điều xe"];
+        C -> D [label="Chở hàng"];
+        D -> A [label="Lưu lịch sử & Trả tiền", style=dashed, color="#00897B"];
     }
     ''')
-
-# Gọi hàm để hiển thị
-draw_professional_workflow()
+    
+    # Giải thích bằng lời văn "bình thường"
+    st.write("### Giải thích đơn giản:")
+    st.write("**Bước 1:** Nông dân thấy có vỏ trấu, rơm rạ thì lên app báo: 'Tui có hàng ở đây'.")
+    st.write("**Bước 2:** App AgriLoop tự tìm xem nhà máy nào đang cần, sau đó xếp các ông nông dân ở gần nhau vào cùng một chuyến xe cho rẻ tiền xăng.")
+    st.write("**Bước 3:** Tài xế nhận lệnh, chạy theo bản đồ app chỉ để gom hàng cho nhanh.")
+    st.write("**Bước 4:** Hàng đến nhà máy, nhà máy quét mã xác nhận và tiền được chuyển về cho nông dân.")
